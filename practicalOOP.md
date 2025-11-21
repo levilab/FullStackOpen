@@ -47,3 +47,14 @@ console.log(revealed.diameters()); // [662, 668]
 ```
 🔥 Wrapping data structure inside a helper function would make the code more maintainable.
 🔥 As we only need to edit this helper function in case the data structure change
+
+``` javascript
+// Given an object with key-value pairs, to extract key or values, using Object.entries
+
+  const object = {1: 5, 2: 10, 5: 4}
+console.log(Object.entries(object)) // [[1, 5],[2, 10],[5, 4]]
+console.log(Object.keys(object)) // [1,2,5]
+console.log(Object.values(object)) // [5,10,4]
+
+
+```
