@@ -34,6 +34,16 @@
       "id": "61",
       "content": "big sur",
       "important": true
+    },
+    {
+      "id": "81",
+      "content": "lubuntu distro",
+      "important": false
+    },
+    {
+      "id": "91",
+      "content": "Mavericks is outdated",
+      "important": false
     }
   ]
 }
