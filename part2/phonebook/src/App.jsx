@@ -3,13 +3,18 @@ import Filter from '../src/components/Filter'
 import Header from '../src/components/Header'
 import PersonForm from '../src/components/PersonForm'
 import Persons from '../src/components/Persons'
-import personService from './services/note.js'
+import personService from './services/person.js'
+import SuccessfulMessage from './components/NotificationsSuccess.jsx'
+import './index.css'
+import FailedMessage from './components/NotificationsFailed.jsx'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
-  const [newName, setNewName] = useState('')
   const [newNumber, setNumber] = useState('')
   const [filteredName, setFilteredName] = useState('')
+  const [newName, setNewName] = useState('')
+  const [message, setMessage] = useState(null)
+  const [error, setErrorMessage] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -20,27 +25,47 @@ const App = () => {
       })
   }, [])
 
-  console.log(persons.length)
   const addPerson = (event) => {
     event.preventDefault()
-    const newPerson = {
-      name: newName,
-      number: newNumber
-    }
-    const isAdded = persons.some((person) => person.name.toLowerCase() === newPerson.name.toLowerCase())
-    if (isAdded){
-        alert(`${newName} is already added to the phonebook`)
-        return
-    }
-
+    /*
+    two bugs:
+    1) adding same name, two tabs, react saved both to server => must fetch the data from server when checking duplication
+    */
     personService
-      .create(newPerson)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNumber('')
-      })
-    }
+      .getAll()
+      .then(currentPerons => {
+            const isAdded = currentPerons.find((person) => person.name.toLowerCase() === newName.toLowerCase())
+            if (isAdded){
+              if (window.confirm(`${newPerson.name} is already added to the phonebook, replace the old number with a new one?`)){
+                const duplicatedPerson = persons.find(person => person.name === newPerson.name)
+                const updatedPerson = {...duplicatedPerson, number: newPerson.number}      
+                personService
+                  .update(updatedPerson.id, updatedPerson)
+                  .then(returnedPerson => {
+                    setPersons(persons.map(person => person.id === updatedPerson.id ? returnedPerson : person))
+                  })
+                  .catch(error => {
+                    setErrorMessage(`Information of ${newPerson.name} has already been removed from server`)
+                    setTimeout(
+                      ()=>setErrorMessage(null)
+                      ,5000)
+                  })
+              }
+            } else  {
+                personService
+                  .create(newPerson)
+                  .then(returnedPerson => {
+                    setPersons(persons.concat(returnedPerson))
+                    setMessage(`Added ${returnedPerson.name}`)
+                    setTimeout(() =>{
+                      setMessage(null)
+                    }, 5000)
+                    setNewName('')
+                    setNumber('')
+                  })
+                }
+              })
+  }
 
   const filteredPersons = persons.filter((person)=> person.name.toLowerCase().includes(filteredName.toLowerCase()))
 
@@ -70,11 +95,14 @@ const App = () => {
   return (
     <div>
       <Header name = 'Phonebook'/>
+      <SuccessfulMessage message={message}/>
+      <FailedMessage message={error} />
       <Filter searchEvent={handleSearchPerson}/>
       <h2>Add a new</h2> 
-      <PersonForm addPerson = {addPerson} newName = {newName} handleInputPerson={handleInputPerson} handleInputPhone = {handleInputPhone}/>
+      <PersonForm addPerson = {addPerson} handleInputPerson={handleInputPerson} handleInputPhone = {handleInputPhone} newName = {newName} newNumber={newNumber}/>
       <h2>Numbers</h2>
-      <div> {filteredPersons.map(person=> <Persons person={person} deletePerson={()=>deletePerson(person)}/>)}
+      <div> 
+        {filteredPersons.map(person=> <Persons person={person} deletePerson={()=>deletePerson(person)}/>)}
       </div>
     </div>
   )
