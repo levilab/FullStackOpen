@@ -20,7 +20,10 @@ const App = () => {
         setNotes(initialNotes)
       })
   },[])
-  
+
+  if (!notes) {
+    return null
+  }
 
   const addNote = (event) => {
     event.preventDefault()

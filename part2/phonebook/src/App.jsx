@@ -68,7 +68,6 @@ const App = () => {
   }
 
   const filteredPersons = persons.filter((person)=> person.name.toLowerCase().includes(filteredName.toLowerCase()))
-
   const deletePerson = (person) => {
     if (window.confirm(`delete ${person.name}`)){
       personService
