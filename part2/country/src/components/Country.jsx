@@ -1,9 +1,14 @@
 import CountryView from "./CountryView"
+import { useState } from "react"
 
-const Country = ({countries, value, showCountryView}) => {
+const Country = ({countries, value}) => {
     if (!value) {
         return null
     }
+
+    const [selectedCountry, setSelectedCountry] = useState(null)
+
+    
     return (
         <div>
             {countries.length > 10 ? (
@@ -13,7 +18,7 @@ const Country = ({countries, value, showCountryView}) => {
                 return (
                 <div key={country.cca3}> 
                     {country.name.common}
-                    <button onClick={() =>showCountryView(country)}>
+                    <button onClick={() =>setSelectedCountry(country)}>
                         Show
                     </button> 
                 </div>)}
@@ -23,6 +28,7 @@ const Country = ({countries, value, showCountryView}) => {
                 <div>Invalid Search</div>
             )
             }
+            {selectedCountry ? <CountryView country = {selectedCountry}/> :null}
         </div>
     )
 }
