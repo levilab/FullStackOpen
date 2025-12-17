@@ -1,0 +1,49 @@
+{
+  "notes": [
+    {
+      "id": "1",
+      "content": "HTML is easy",
+      "important": true
+    },
+    {
+      "id": "2",
+      "content": "Browser can execute only JavaScript",
+      "important": false
+    },
+    {
+      "id": "3",
+      "content": "GET and POST are the most important methods of HTTP protocol",
+      "important": true
+    },
+    {
+      "id": "4",
+      "content": "a new note...",
+      "important": false
+    },
+    {
+      "id": "80eb",
+      "content": "mavericks",
+      "important": true
+    },
+    {
+      "id": "5687",
+      "content": "mojave",
+      "important": false
+    },
+    {
+      "id": "61",
+      "content": "big sur",
+      "important": true
+    },
+    {
+      "id": "81",
+      "content": "lubuntu distro",
+      "important": false
+    },
+    {
+      "id": "91",
+      "content": "Mavericks is outdated",
+      "important": false
+    }
+  ]
+}
