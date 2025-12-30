@@ -1,0 +1,15 @@
+### GET ALL NOTES
+GET http://localhost:3001/api/notes
+
+### CREATE A NEW NOTE
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "Ensure that everything still works",
+    "important": "true"
+}
+
+### DELETE A NOTE
+DELETE http://localhost:3001/api/notes/694b4de1cc4d0fc228424b0a
+

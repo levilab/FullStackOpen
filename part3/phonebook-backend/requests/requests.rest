@@ -15,3 +15,13 @@ Content-Type: application/json
     "name": "Richard Heize",
     "number": "43-56-67856432" 
 }
+
+### Modify current person
+PUT http://localhost:3001/api/persons/6948d31a5ebd6fbe2a29b7eb
+Content-Type: application/json
+
+{
+    "name": "Anna",
+    "number": "000000"
+
+}
