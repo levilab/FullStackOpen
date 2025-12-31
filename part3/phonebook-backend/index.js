@@ -48,7 +48,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 const customFormat = ':method :url :status :res[content-length] - :response-time ms :body'
 
-app.post('/api/persons', morgan(customFormat), (request, response) => {
+app.post('/api/persons', morgan(customFormat), (request, response, next) => {
   const body = request.body
 
   if (!body.name) {
@@ -68,9 +68,11 @@ app.post('/api/persons', morgan(customFormat), (request, response) => {
       number: body.number
   })
 
-  person.save().then(savedPerson => {
+  person.save()
+    .then(savedPerson => {
     response.json(savedPerson)
   })
+    .catch (error => next(error))
   
 })
 
@@ -96,6 +98,8 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
   if (error.name === "CastError") {
     return response.status(400).send({error: 'malformatted id'})
+  } else if (error.name ==="ValidationError") {
+    return response.status(400).send({error: error.message})
   }
   next(error)
 }

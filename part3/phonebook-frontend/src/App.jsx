@@ -63,6 +63,12 @@ const App = () => {
                     setNewName('')
                     setNumber('')
                   })
+                  .catch(error => {
+                    console.log('error detected:')
+                    console.log(error)
+                    console.log(error.response.data.error)
+                    setErrorMessage("name invalid")
+                  })
                 }
               })
   }
