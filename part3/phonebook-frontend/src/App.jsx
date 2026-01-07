@@ -64,10 +64,14 @@ const App = () => {
                     setNumber('')
                   })
                   .catch(error => {
-                    console.log('error detected:')
-                    console.log(error)
-                    console.log(error.response.data.error)
-                    setErrorMessage("name invalid")
+                      // Access the data sent by the backend
+                      const errorMessage = error.response.data.error;
+                      
+                      console.log("Validation Error:", errorMessage);
+                      
+                      // Set this to your state to show it in the UI
+                      setErrorMessage(errorMessage); 
+                      setTimeout(() => setErrorMessage(null), 5000);
                   })
                 }
               })
